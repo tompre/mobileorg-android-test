@@ -1,9 +1,9 @@
 package com.matburt.mobileorg.test;
 
+import com.matburt.mobileorg.provider.OrgNode;
 import com.matburt.mobileorg.provider.OrgProvider;
 import com.matburt.mobileorg.provider.OrgContract.OrgData;
 import com.matburt.mobileorg.provider.OrgDatabaseNew;
-import com.matburt.mobileorg.provider.OrgNode;
 
 import android.database.Cursor;
 import android.test.ProviderTestCase2;
