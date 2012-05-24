@@ -5,32 +5,55 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
-import android.test.IsolatedContext;
-
-import com.matburt.mobileorg.Parsing.OrgDatabase;
 import com.matburt.mobileorg.Parsing.OrgFileParser;
-import static org.easymock.EasyMock.*;
+import com.matburt.mobileorg.provider.OrgProvider;
+import com.matburt.mobileorg.provider.OrgDatabaseNew;
+import com.matburt.mobileorg.provider.OrgContract.OrgData;
 
-public class OrgFileParserTest {
+import android.database.Cursor;
+import android.test.ProviderTestCase2;
+import android.test.mock.MockContentResolver;
 
-	String testFile = "* new \n* test";
+public class OrgFileParserTest extends ProviderTestCase2<OrgProvider> {
+
+	private MockContentResolver resolver;
+	private OrgDatabaseNew db;
+	private OrgFileParser parser;
 	
-	@Test
-	public void testMocks() {
-		OrgDatabase orgdbMock = createMock(OrgDatabase.class);
-		replay(orgdbMock);
+	public OrgFileParserTest() {
+		super(OrgProvider.class, OrgProvider.class.getName());
+	}
 
-		OrgFileParser parser = new OrgFileParser(orgdbMock);
-		IsolatedContext context = new IsolatedContext(null, null);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.resolver = getMockContentResolver();
+		this.db = new OrgDatabaseNew(getMockContext());
+		this.parser = new OrgFileParser(this.db, resolver);
+	}
+	
+	public void testParseSimple() {
+		Cursor cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, 
+				null, null, null);
+		assertNotNull(cursor);
+		int preOrgDataSize = cursor.getCount();
 		
 		InputStream is = new ByteArrayInputStream(testFile.getBytes());
 		BufferedReader breader = new BufferedReader(new InputStreamReader(is));
-		parser.parse("filename", "file Alias", "000000000", breader, context);
-
-		verify(orgdbMock);
+		parser.parse("new file", "file alias", "", breader, getMockContext());
+		int postOrgDataSize = resolver.query(OrgData.CONTENT_URI, null, null, null,
+				null).getCount();
+		assertEquals(preOrgDataSize + testFileHeadingSize, postOrgDataSize);
 	}
+	
+	
+	private String testFile = "* new \n* test";
+	private int testFileHeadingSize = 2;
+	private String indexFile = "#+READONLY\n" +
+			"#+TODO: TODO NEXT PLAN RSCH GOAL DEFERRED WAIT | SOMEDAY CANC DONE\n" +
+			"#+TAGS: { Home Computer Online Phone Errands DTU } { Agenda Silent Read Listen Watch Games Code }\n" +
+			"#+ALLPRIORITIES: A B C\n" +
+			"* [[file:agendas.org][Agenda Views]]\n" +
+			"* [[file:GTD.org][GTD.org]]\n";
 }
