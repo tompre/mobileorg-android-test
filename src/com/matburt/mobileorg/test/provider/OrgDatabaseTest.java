@@ -1,4 +1,4 @@
-package com.matburt.mobileorg.test;
+package com.matburt.mobileorg.test.provider;
 
 import com.matburt.mobileorg.provider.OrgNode;
 import com.matburt.mobileorg.provider.OrgProvider;
