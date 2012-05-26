@@ -12,7 +12,9 @@ public class OrgTestFiles {
 		public static final String checksumsFile = "25aade750f6b60aa1df155fcbb357191  index.org\n"
 				+ "42055316a0808ad634d7981653cf4400faddb91f  GTD.org";
 		
-		public static final String orgFile = "* new\n** test";
+		public static final String orgFileTopHeading = "top heading";
+		public static final String orgFileChildHeading = "child heading";
+		public static final String orgFile = "* " + orgFileTopHeading + "\n** " + orgFileChildHeading;
 	}
 	
 	public static class ComplexOrgFiles {

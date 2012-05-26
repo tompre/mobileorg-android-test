@@ -32,7 +32,7 @@ public class OrgFileParserTest extends ProviderTestCase2<OrgProvider> {
 		super.setUp();
 		this.resolver = getMockContentResolver();
 		this.db = new OrgDatabaseStub(getMockContext());
-		this.parser = new OrgFileParser(this.db, resolver);
+		this.parser = new OrgFileParser(db, resolver);
 	}
 	
 	@Override
@@ -66,17 +66,54 @@ public class OrgFileParserTest extends ProviderTestCase2<OrgProvider> {
 		Cursor cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, 
 				null, null, null);
 		assertNotNull(cursor);
-		int preOrgDataSize = cursor.getCount();
+		cursor.close();
 		
 		InputStream is = new ByteArrayInputStream(SimpleOrgFiles.orgFile.getBytes());
 		BufferedReader breader = new BufferedReader(new InputStreamReader(is));
 		OrgFile orgFile = new OrgFile("new file", "file alias", "");
 		parser.parse(orgFile, breader);
-		int postOrgDataSize = resolver.query(OrgData.CONTENT_URI, null, null, null,
-				null).getCount();
-		assertEquals(preOrgDataSize + 1, postOrgDataSize);
 		assertEquals(2, db.fastInsertNodeCalls);
 		assertEquals(3, db.fastInsertNodePayloadCalls);
+
+		cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS,
+				null, null, null);
+		assertEquals(3, cursor.getCount());
+		cursor.close();
+
+		assertTrue(orgFile.id > -1);
+		cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, OrgData.FILE_ID + "=?",
+				new String[] { Long.toString(orgFile.id) }, OrgData.ID + " DESC");
+		assertEquals(3, cursor.getCount());
+		cursor.close();
+		
+
+	}
+	
+	public void testParseParentChildRelation() {
+		InputStream is = new ByteArrayInputStream(SimpleOrgFiles.orgFile.getBytes());
+		BufferedReader breader = new BufferedReader(new InputStreamReader(is));
+		final String name = "file alias";
+		OrgFile orgFile = new OrgFile("GTD.org", name, "");
+		parser.parse(orgFile, breader);
+
+		Cursor cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, OrgData.NAME + "=?",
+				new String[] { name }, null);
+		OrgNode fileNode = new OrgNode(cursor);
+		cursor.close();
+		
+		cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, OrgData.NAME + "=?",
+				new String[] { SimpleOrgFiles.orgFileTopHeading }, null);
+		OrgNode topNode = new OrgNode(cursor);
+		cursor.close();
+		
+		cursor = resolver.query(OrgData.CONTENT_URI, OrgData.DEFAULT_COLUMNS, OrgData.NAME + "=?",
+				new String[] { SimpleOrgFiles.orgFileChildHeading }, null);
+		OrgNode childNode = new OrgNode(cursor);
+		cursor.close();
+
+		assertEquals(-1, fileNode.parentId);
+		assertEquals(fileNode.id, topNode.parentId);
+		assertEquals(topNode.id, childNode.parentId);
 	}
 	
 	public void testGetChecksums() {

@@ -17,11 +17,12 @@ public class OrgDatabaseStub extends OrgDatabase {
 	@Override
 	public long fastInsertNode(OrgNode node) {
 		fastInsertNodeCalls++;
-		return fastInsertNodeCalls;
+		return super.fastInsertNode(node);
 	}
 	
 	@Override
 	public void fastInsertNodePayload(Long id, final String payload) {
 		fastInsertNodePayloadCalls++;
+		super.fastInsertNodePayload(id, payload);
 	}
 }
