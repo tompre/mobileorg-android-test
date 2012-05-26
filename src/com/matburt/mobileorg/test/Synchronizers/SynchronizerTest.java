@@ -2,14 +2,17 @@ package com.matburt.mobileorg.test.Synchronizers;
 
 import android.test.ProviderTestCase2;
 
+import com.matburt.mobileorg.Synchronizers.Synchronizer;
+import com.matburt.mobileorg.Synchronizers.SynchronizerInterface;
 import com.matburt.mobileorg.provider.OrgDatabaseNew;
 import com.matburt.mobileorg.provider.OrgProvider;
 
 public class SynchronizerTest extends ProviderTestCase2<OrgProvider> {
 
-	private SynchronizerStub synchronizer;
+	private Synchronizer synchronizer;
 	private OrgFileParserStub parser;
 	private OrgDatabaseNew db;
+	private SynchronizerStub synchronizerStub;
 
 	public SynchronizerTest(Class<OrgProvider> providerClass,
 			String providerAuthority) {
@@ -19,9 +22,10 @@ public class SynchronizerTest extends ProviderTestCase2<OrgProvider> {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.synchronizer = new SynchronizerStub(getMockContext());
 		this.db = new OrgDatabaseNew(getMockContext());
 		this.parser = new OrgFileParserStub(db, getMockContentResolver());
+		this.synchronizerStub = new SynchronizerStub();
+		this.synchronizer = new Synchronizer(getMockContext(), (SynchronizerInterface)synchronizerStub);
 	}
 	
 	@Override
