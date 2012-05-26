@@ -71,7 +71,7 @@ public class OrgFileParserTest extends ProviderTestCase2<OrgProvider> {
 		InputStream is = new ByteArrayInputStream(testFile.getBytes());
 		BufferedReader breader = new BufferedReader(new InputStreamReader(is));
 		OrgFile orgFile = new OrgFile("new file", "file alias", "");
-		parser.parse(orgFile, breader, getMockContext());
+		parser.parse(orgFile, breader);
 //		int postOrgDataSize = resolver.query(OrgData.CONTENT_URI, null, null, null,
 //				null).getCount();
 //		assertEquals(preOrgDataSize + testFileHeadingSize, postOrgDataSize);

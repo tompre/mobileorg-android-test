@@ -3,10 +3,9 @@ package com.matburt.mobileorg.test.Synchronizers;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import com.matburt.mobileorg.Parsing.MobileOrgApplication;
-import com.matburt.mobileorg.Synchronizers.DropboxSynchronizer;
-
 import android.test.AndroidTestCase;
+
+import com.matburt.mobileorg.Synchronizers.DropboxSynchronizer;
 
 public class DropboxSynchronizerTest extends AndroidTestCase {
 
@@ -15,7 +14,7 @@ public class DropboxSynchronizerTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.synchronizer = new DropboxSynchronizer(null, null);
+		this.synchronizer = new DropboxSynchronizer(null);
 	}
 
 	@Override

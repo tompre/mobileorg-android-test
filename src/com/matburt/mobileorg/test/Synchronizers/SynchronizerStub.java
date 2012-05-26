@@ -8,13 +8,15 @@ import javax.net.ssl.SSLHandshakeException;
 
 import android.content.Context;
 
-import com.matburt.mobileorg.Parsing.MobileOrgApplication;
 import com.matburt.mobileorg.Synchronizers.Synchronizer;
 
 public class SynchronizerStub extends Synchronizer {
 
-	SynchronizerStub(Context context, MobileOrgApplication appInst) {
-		super(context, appInst);
+	int putRemoteFileCount = 0;
+	int getRemoteFileCount = 0;
+	
+	SynchronizerStub(Context context) {
+		super(context);
 	}
 
 	@Override
@@ -25,21 +27,18 @@ public class SynchronizerStub extends Synchronizer {
 	@Override
 	protected void putRemoteFile(String filename, String contents)
 			throws Exception, IOException {
-		// TODO Auto-generated method stub
-		
+		putRemoteFileCount++;
 	}
 
 	@Override
 	public BufferedReader getRemoteFile(String filename) throws Exception,
 			IOException, CertificateException, SSLHandshakeException {
-		// TODO Auto-generated method stub
+		getRemoteFileCount++;
 		return null;
 	}
 
 	@Override
-	protected void postSynchronize() {
-		// TODO Auto-generated method stub
-		
+	protected void postSynchronize() {		
 	}
 
 }
