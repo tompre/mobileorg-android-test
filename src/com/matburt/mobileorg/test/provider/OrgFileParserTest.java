@@ -9,8 +9,8 @@ import com.matburt.mobileorg.Parsing.OrgFileParser;
 import com.matburt.mobileorg.provider.OrgFile;
 import com.matburt.mobileorg.provider.OrgNode;
 import com.matburt.mobileorg.provider.OrgProvider;
-import com.matburt.mobileorg.provider.OrgDatabaseNew;
 import com.matburt.mobileorg.provider.OrgContract.OrgData;
+import com.matburt.mobileorg.test.Synchronizers.OrgTestFiles.SimpleOrgFiles;
 
 import android.database.Cursor;
 import android.test.ProviderTestCase2;
@@ -68,24 +68,34 @@ public class OrgFileParserTest extends ProviderTestCase2<OrgProvider> {
 		assertNotNull(cursor);
 		int preOrgDataSize = cursor.getCount();
 		
-		InputStream is = new ByteArrayInputStream(testFile.getBytes());
+		InputStream is = new ByteArrayInputStream(SimpleOrgFiles.orgFile.getBytes());
 		BufferedReader breader = new BufferedReader(new InputStreamReader(is));
 		OrgFile orgFile = new OrgFile("new file", "file alias", "");
 		parser.parse(orgFile, breader);
-//		int postOrgDataSize = resolver.query(OrgData.CONTENT_URI, null, null, null,
-//				null).getCount();
-//		assertEquals(preOrgDataSize + testFileHeadingSize, postOrgDataSize);
+		int postOrgDataSize = resolver.query(OrgData.CONTENT_URI, null, null, null,
+				null).getCount();
+		assertEquals(preOrgDataSize + 1, postOrgDataSize);
 		assertEquals(2, db.fastInsertNodeCalls);
 		assertEquals(3, db.fastInsertNodePayloadCalls);
 	}
 	
+	public void testGetChecksums() {
+		// TODO Implement
+	}
 	
-	private String testFile = "* new \n* test";
-	private int testFileHeadingSize = 2;
-	private String indexFile = "#+READONLY\n" +
-			"#+TODO: TODO NEXT PLAN RSCH GOAL DEFERRED WAIT | SOMEDAY CANC DONE\n" +
-			"#+TAGS: { Home Computer Online Phone Errands DTU } { Agenda Silent Read Listen Watch Games Code }\n" +
-			"#+ALLPRIORITIES: A B C\n" +
-			"* [[file:agendas.org][Agenda Views]]\n" +
-			"* [[file:GTD.org][GTD.org]]\n";
+	public void testGetFilesFromIndex() {
+		// TODO Implement
+	}
+	
+	public void testGetTodosFromIndex() {
+		// TODO Implement
+	}
+	
+	public void testGetPrioritiesFromIndex() {
+		// TODO Implement
+	}
+	
+	public void testGetTagsFromIndex() {
+		// TODO Implement
+	}
 }

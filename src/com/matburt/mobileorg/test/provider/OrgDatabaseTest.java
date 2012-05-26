@@ -3,7 +3,7 @@ package com.matburt.mobileorg.test.provider;
 import com.matburt.mobileorg.provider.OrgNode;
 import com.matburt.mobileorg.provider.OrgProvider;
 import com.matburt.mobileorg.provider.OrgContract.OrgData;
-import com.matburt.mobileorg.provider.OrgDatabaseNew;
+import com.matburt.mobileorg.provider.OrgDatabase;
 
 import android.database.Cursor;
 import android.test.ProviderTestCase2;
@@ -12,7 +12,7 @@ import android.test.mock.MockContentResolver;
 public class OrgDatabaseTest extends ProviderTestCase2<OrgProvider> {
 
 	private MockContentResolver resolver;
-	private OrgDatabaseNew db;
+	private OrgDatabase db;
 
 	public OrgDatabaseTest() {
 		super(OrgProvider.class, OrgProvider.class.getName());
@@ -22,7 +22,7 @@ public class OrgDatabaseTest extends ProviderTestCase2<OrgProvider> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.resolver = getMockContentResolver();
-		this.db = new OrgDatabaseNew(getMockContext());
+		this.db = new OrgDatabase(getMockContext());
 	}
 	
 	@Override

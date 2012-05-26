@@ -5,7 +5,7 @@ import android.test.ProviderTestCase2;
 import android.test.mock.MockContentResolver;
 
 import com.matburt.mobileorg.provider.OrgContract.OrgData;
-import com.matburt.mobileorg.provider.OrgDatabaseNew;
+import com.matburt.mobileorg.provider.OrgDatabase;
 import com.matburt.mobileorg.provider.OrgFile;
 import com.matburt.mobileorg.provider.OrgNode;
 import com.matburt.mobileorg.provider.OrgProvider;
@@ -14,7 +14,7 @@ import com.matburt.mobileorg.provider.OrgContract.Files;
 public class OrgProviderTest extends ProviderTestCase2<OrgProvider> {
 
 	private MockContentResolver resolver;
-	private OrgDatabaseNew db;
+	private OrgDatabase db;
 
 	public OrgProviderTest() {
 		super(OrgProvider.class, OrgProvider.class.getName());
@@ -24,7 +24,7 @@ public class OrgProviderTest extends ProviderTestCase2<OrgProvider> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.resolver = getMockContentResolver();
-		this.db = new OrgDatabaseNew(getMockContext());
+		this.db = new OrgDatabase(getMockContext());
 	}
 	
 	@Override

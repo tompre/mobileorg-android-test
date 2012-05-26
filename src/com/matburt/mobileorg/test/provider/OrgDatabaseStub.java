@@ -2,10 +2,10 @@ package com.matburt.mobileorg.test.provider;
 
 import android.content.Context;
 
-import com.matburt.mobileorg.provider.OrgDatabaseNew;
+import com.matburt.mobileorg.provider.OrgDatabase;
 import com.matburt.mobileorg.provider.OrgNode;
 
-public class OrgDatabaseStub extends OrgDatabaseNew {
+public class OrgDatabaseStub extends OrgDatabase {
 
 	int fastInsertNodeCalls = 0;
 	int fastInsertNodePayloadCalls = 0;
